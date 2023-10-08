@@ -1,0 +1,24 @@
+{
+  "name": "trello-api-tests",
+  "version": "1.0.0",
+  "description": "Repository to test Trello API",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bartoszwalasek/Trello-API-Tests.git"
+  },
+  "author": "Bartosz Walasek",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bartoszwalasek/Trello-API-Tests/issues"
+  },
+  "homepage": "https://github.com/bartoszwalasek/Trello-API-Tests#readme",
+  "devDependencies": {
+    "chai": "^4.3.10",
+    "mocha": "^10.2.0",
+    "pactum": "^3.5.1"
+  }
+}
