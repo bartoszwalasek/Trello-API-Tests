@@ -16,6 +16,7 @@ describe("APi tests with Trello boards", () => {
                 ...credentials
             })
         expect(response.statusCode).to.eql(200)
+        expect(response.body.name).to.eql("Board to test")
         board = response.body
     })
     it("Delete a Board", async () => {
@@ -25,5 +26,13 @@ describe("APi tests with Trello boards", () => {
                 ...credentials
             })
         expect(response.statusCode).to.eql(200)
+    })
+    it("Get a Board after deleting", async () => {
+        const response = await spec()
+            .get(`${BASE_URL}/${board.id}`)
+            .withQueryParams({
+                ...credentials
+            })
+        expect(response.statusCode).to.eql(404)
     })
 })
