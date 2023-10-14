@@ -7,6 +7,7 @@ import { BASE_URL, list_name } from "../helpers/data.js";
 describe("APi tests with Trello boards", () => {
 
     let board
+    let label
 
     it("Create a Board", async () => {
         const response = await spec()
@@ -18,6 +19,32 @@ describe("APi tests with Trello boards", () => {
         expect(response.statusCode).to.eql(200)
         expect(response.body.name).to.eql("Board to test")
         board = response.body
+    })
+    it("Create a Label on Board", async () => {
+        const response = await spec()
+            .post(`${BASE_URL}boards/${board.id}/labels`)
+            .withQueryParams({
+                name: "label_name",
+                color: "blue",
+                ...credentials
+            })
+            expect(response.statusCode).to.eql(200)
+            expect(response.body.name).to.eql("label_name")
+            expect(response.body.color).to.eql("blue")
+            label = response.body
+    })
+    it("Create a List on a Board", async () => {
+        const response = await spec()
+            .post(`${BASE_URL}boards/${board.id}/lists`)
+            .withQueryParams({
+                name: list_name,
+                ...credentials
+            })
+            .withHeaders({
+                Accept: 'application/json'
+            })
+        expect(response.statusCode).to.eql(200)
+        expect(response.body.name).to.eql(list_name)
     })
     it("Verify default Lists on a Board", async () => {
         const default_lists = [{name: "To Do"}, {name: "Doing"}, {name: "Done"}]
@@ -34,19 +61,6 @@ describe("APi tests with Trello boards", () => {
             let desired_list = response.body.find(received_list => received_list.name === list.name)
             expect(desired_list).to.include({name: list.name})
         })
-    })
-    it("Create a List on a Board", async () => {
-        const response = await spec()
-            .post(`${BASE_URL}boards/${board.id}/lists`)
-            .withQueryParams({
-                name: list_name,
-                ...credentials
-            })
-            .withHeaders({
-                Accept: 'application/json'
-            })
-        expect(response.statusCode).to.eql(200)
-        expect(response.body.name).to.eql(list_name)
     })
     it("Find a newly added List", async () => {
         const response = await spec()
