@@ -1,4 +1,4 @@
-name: Node.js CI
+name: Trello API Tests CI
 env:
   KEY: '${{ secrets.KEY }}'
   TOKEN: '${{ secrets.TOKEN }}'
@@ -27,3 +27,9 @@ jobs:
     - run: npm ci
     - run: npm run build --if-present
     - run: npm test
+    - name: Upload Artifact
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: Trello API Test Report
+          path: mochawesome-report
