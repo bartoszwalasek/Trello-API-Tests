@@ -19,6 +19,22 @@ describe("APi tests with Trello boards", () => {
         expect(response.body.name).to.eql("Board to test")
         board = response.body
     })
+    it("Verify default Lists on a Board", async () => {
+        const default_lists = [{name: "To Do"}, {name: "Doing"}, {name: "Done"}]
+        const response = await spec()
+            .get(`${BASE_URL}boards/${board.id}/lists`)
+            .withQueryParams({
+                ...credentials
+            })
+            .withHeaders({
+                Accept: 'application/json'
+            })
+        expect(response.statusCode).to.eql(200)
+        default_lists.forEach(list => {
+            let desired_list = response.body.find(received_list => received_list.name === list.name)
+            expect(desired_list).to.include({name: list.name})
+        })
+    })
     it("Create a List on a Board", async () => {
         const response = await spec()
             .post(`${BASE_URL}boards/${board.id}/lists`)
