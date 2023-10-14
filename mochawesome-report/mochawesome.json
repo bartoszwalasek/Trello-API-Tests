@@ -1,0 +1,162 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 4,
+    "passes": 3,
+    "pending": 0,
+    "failures": 1,
+    "start": "2023-10-14T10:09:19.436Z",
+    "end": "2023-10-14T10:09:22.099Z",
+    "duration": 2663,
+    "testsRegistered": 4,
+    "passPercent": 75,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "5e438101-e5ad-4fd0-b213-3c26e5e3e8b7",
+      "title": "",
+      "fullFile": "C:\\Users\\Lenovo\\Documents\\git\\Trello-API-Tests\\tests\\boards.test.js",
+      "file": "\\tests\\boards.test.js",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "f096789e-b152-4114-879d-16e718f833dd",
+          "title": "APi tests with Trello boards",
+          "fullFile": "C:\\Users\\Lenovo\\Documents\\git\\Trello-API-Tests\\tests\\boards.test.js",
+          "file": "\\tests\\boards.test.js",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "Create a Board",
+              "fullTitle": "APi tests with Trello boards Create a Board",
+              "timedOut": false,
+              "duration": 810,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "const response = await spec()\n    .post(BASE_URL)\n    .withQueryParams({\n        name: \"Board to test\",\n        ...credentials\n    })\nexpect(response.statusCode).to.eql(200)\nexpect(response.body.name).to.eql(\"Board to test\")\nboard = response.body\nconsole.log(board)",
+              "err": {},
+              "uuid": "a6718f88-c995-49d3-ba18-58b7e9aa5f01",
+              "parentUUID": "f096789e-b152-4114-879d-16e718f833dd",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Create a Tag for a Board",
+              "fullTitle": "APi tests with Trello boards Create a Tag for a Board",
+              "timedOut": false,
+              "duration": 304,
+              "state": "failed",
+              "speed": null,
+              "pass": false,
+              "fail": true,
+              "pending": false,
+              "context": null,
+              "code": "const response = await spec()\n    .post(`${BASE_URL}/${board.id}`)\n    .withQueryParams({\n        value: \"test tag\",\n        ...credentials\n    })\n    .inspect()\nexpect(response.statusCode).to.eql(200)",
+              "err": {
+                "message": "AssertionError: expected 404 to deeply equal 200",
+                "estack": "AssertionError: expected 404 to deeply equal 200\n    at Context.<anonymous> (file:///C:/Users/Lenovo/Documents/git/Trello-API-Tests/tests/boards.test.js:31:40)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)",
+                "diff": "- 404\n+ 200\n"
+              },
+              "uuid": "5caf2925-2e05-4f6c-b240-d150ce26cb1a",
+              "parentUUID": "f096789e-b152-4114-879d-16e718f833dd",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Delete a Board",
+              "fullTitle": "APi tests with Trello boards Delete a Board",
+              "timedOut": false,
+              "duration": 1046,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "const response = await spec()\n    .delete(`${BASE_URL}/${board.id}`)\n    .withQueryParams({\n        ...credentials\n    })\nexpect(response.statusCode).to.eql(200)",
+              "err": {},
+              "uuid": "7b2774aa-ab17-49cb-92c1-3591e80f6db8",
+              "parentUUID": "f096789e-b152-4114-879d-16e718f833dd",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Get a Board after deleting",
+              "fullTitle": "APi tests with Trello boards Get a Board after deleting",
+              "timedOut": false,
+              "duration": 462,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "const response = await spec()\n    .get(`${BASE_URL}/${board.id}`)\n    .withQueryParams({\n        ...credentials\n    })\nexpect(response.statusCode).to.eql(404)",
+              "err": {},
+              "uuid": "9d7cd7e9-9a4a-402c-95be-6c19fd406617",
+              "parentUUID": "f096789e-b152-4114-879d-16e718f833dd",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "a6718f88-c995-49d3-ba18-58b7e9aa5f01",
+            "7b2774aa-ab17-49cb-92c1-3591e80f6db8",
+            "9d7cd7e9-9a4a-402c-95be-6c19fd406617"
+          ],
+          "failures": [
+            "5caf2925-2e05-4f6c-b240-d150ce26cb1a"
+          ],
+          "pending": [],
+          "skipped": [],
+          "duration": 2622,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "10.2.0"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": true,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.3"
+    },
+    "marge": {
+      "options": null,
+      "version": "6.2.0"
+    }
+  }
+}
