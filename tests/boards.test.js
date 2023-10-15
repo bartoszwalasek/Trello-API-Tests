@@ -3,11 +3,13 @@ import pkg from "pactum";
 const { spec } = pkg;
 import { credentials } from "../helpers/credentials.js";
 import { BASE_URL, list_name, board_member } from "../helpers/data.js";
+import { card } from "./cards.test.js";
 
 describe("APi tests with Trello boards", () => {
 
     let board
     let label
+    let lists
 
     it("Create a Board", async () => {
         const response = await spec()
@@ -61,6 +63,7 @@ describe("APi tests with Trello boards", () => {
             let desired_list = response.body.find(received_list => received_list.name === list.name)
             expect(desired_list).to.include({name: list.name})
         })
+        lists = response.body
     })
     it("Find a newly added List", async () => {
         const response = await spec()
@@ -74,6 +77,10 @@ describe("APi tests with Trello boards", () => {
         const new_list = response.body.find(list => list.name === list_name);
         expect(response.statusCode).to.eql(200)
         expect(new_list).to.include({name: list_name})
+    })
+    it("Create a New Card in To Do List", () => {
+        let to_do_list = lists.find(list => list.name === "To Do")
+        card.create_new_card(to_do_list)
     })
     it("Get the Members of Board", async () => {
         const response = await spec()
