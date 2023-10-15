@@ -2,7 +2,7 @@ import { expect } from "chai";
 import pkg from "pactum";
 const { spec } = pkg;
 import { credentials } from "../helpers/credentials.js";
-import { BASE_URL, list_name } from "../helpers/data.js";
+import { BASE_URL, list_name, board_member } from "../helpers/data.js";
 
 describe("APi tests with Trello boards", () => {
 
@@ -74,6 +74,16 @@ describe("APi tests with Trello boards", () => {
         const new_list = response.body.find(list => list.name === list_name);
         expect(response.statusCode).to.eql(200)
         expect(new_list).to.include({name: list_name})
+    })
+    it("Get the Members of Board", async () => {
+        const response = await spec()
+            .get(`${BASE_URL}boards/${board.id}/members`)
+            .withQueryParams({
+                ...credentials
+            })
+        const member = response.body.find(member => member.id === board_member.id)
+        expect(response.statusCode).to.eql(200)
+        expect(member).to.eql({id: board_member.id, fullName: board_member.fullName, username: board_member.username})
     })
     it("Delete a Board", async () => {
         const response = await spec()
