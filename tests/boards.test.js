@@ -49,7 +49,7 @@ describe("APi tests with Trello boards", () => {
   });
   it("Verify default Lists on a Board", async () => {
     const default_lists = [
-      { name: "To Do 1" },
+      { name: "To Do" },
       { name: "Doing" },
       { name: "Done" },
     ];
