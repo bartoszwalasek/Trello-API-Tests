@@ -3,36 +3,16 @@ import pkg from "pactum";
 const { spec } = pkg;
 import { credentials, board_member } from "../helpers/credentials.js";
 import { BASE_URL, list_name } from "../helpers/data.js";
+import { board } from "../helpers/classes/Board.js";
 import { card } from "../helpers/classes/Card.js";
 
 describe("APi tests with Trello boards", () => {
-  let board;
-  let label;
   let lists;
-
-  it("Create a Board", async () => {
-    const response = await spec()
-      .post(`${BASE_URL}/boards/`)
-      .withQueryParams({
-        name: "Board to test",
-        ...credentials,
-      });
-    expect(response.statusCode).to.eql(200);
-    expect(response.body.name).to.eql("Board to test");
-    board = response.body;
+  it("Create a Board", () => {
+    board.create_new_board("New Board");
   });
-  it("Create a Label on Board", async () => {
-    const response = await spec()
-      .post(`${BASE_URL}/boards/${board.id}/labels`)
-      .withQueryParams({
-        name: "label_name",
-        color: "blue",
-        ...credentials,
-      });
-    expect(response.statusCode).to.eql(200);
-    expect(response.body.name).to.eql("label_name");
-    expect(response.body.color).to.eql("blue");
-    label = response.body;
+  it("Create a Label on Board", () => {
+    board.create_label_on_board("New Label", "blue");
   });
   it("Create a List on a Board", async () => {
     const response = await spec()
