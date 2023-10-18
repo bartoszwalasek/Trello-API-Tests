@@ -2,6 +2,7 @@ name: Trello API Tests CI
 env:
   KEY: '${{ secrets.KEY }}'
   TOKEN: '${{ secrets.TOKEN }}'
+  ID: '${{ secrets.ID }}'
 on:
   push:
     branches: [ "main" ]
