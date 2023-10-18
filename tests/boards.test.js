@@ -3,7 +3,7 @@ import pkg from "pactum";
 const { spec } = pkg;
 import { credentials, board_member } from "../helpers/credentials.js";
 import { BASE_URL, list_name } from "../helpers/data.js";
-import { card } from "./cards.test.js";
+import { card } from "../helpers/classes/Card.js";
 
 describe("APi tests with Trello boards", () => {
   let board;

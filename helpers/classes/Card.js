@@ -1,8 +1,8 @@
 import { expect } from "chai";
 import pkg from "pactum";
 const { spec } = pkg;
-import { credentials } from "../helpers/credentials.js";
-import { BASE_URL } from "../helpers/data.js";
+import { credentials } from "../credentials.js";
+import { BASE_URL } from "../data.js";
 
 export class Card {
 
