@@ -1,8 +1,8 @@
 import { expect } from "chai";
 import pkg from "pactum";
 const { spec } = pkg;
-import { credentials } from "../helpers/credentials.js";
-import { BASE_URL, list_name, board_member } from "../helpers/data.js";
+import { credentials, board_member } from "../helpers/credentials.js";
+import { BASE_URL, list_name } from "../helpers/data.js";
 import { card } from "./cards.test.js";
 
 describe("APi tests with Trello boards", () => {
