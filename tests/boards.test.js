@@ -1,24 +1,22 @@
-import { expect } from "chai";
-import pkg from "pactum";
-const { spec } = pkg;
-import { credentials, board_member } from "../helpers/credentials.js";
-import { BASE_URL, list_name } from "../helpers/data.js";
 import { board } from "../helpers/classes/Board.js";
-import { card } from "../helpers/classes/Card.js";
 
 describe("APi tests with Trello boards", () => {
   let lists;
-  it("Create a Board", () => {
-    board.createNewBoard("New Board");
+
+  it("Create a Board", async () => {
+    await board.createNewBoard("New Board");
   });
-  it("Create a Label on a Board", () => {
-    board.createLabelOnBoard("New Label", "green");
+
+  it("Create a Label on a Board", async () => {
+    await board.createLabelOnBoard("New Label", "green");
   });
-  it("Delete a Board", () => {
-    board.deleteBoard();
+
+  it("Delete a Board", async () => {
+    await board.deleteBoard(board.createdBoard.id);
   });
-  it("Get a Board after deleting", () => {
-    board.getBoard(404);
+
+  it("Get a Board after deleting", async () => {
+    await board.getBoard(404);
   });
   // it("Create a List on a Board", async () => {
   //   const response = await spec()
