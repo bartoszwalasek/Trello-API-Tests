@@ -5,33 +5,53 @@ import { credentials } from "../credentials.js";
 import { BASE_URL } from "../data.js";
 
 export class Board {
-  constructor() {
-    this.board;
-    this.label;
+  constructor () {
+    this.createdBoard
+    this.createdLabel
   }
-  async create_new_board(board_name) {
+
+  async createNewBoard(boardName) {
     const response = await spec()
       .post(`${BASE_URL}/boards/`)
       .withQueryParams({
-        name: board_name,
+        name: boardName,
         ...credentials,
       });
-    expect(response.statusCode).to.eql(200);
-    expect(response.body.name).to.eql("Board to test");
-    this.board = response.body;
+    this.createdBoard = response.body;
+    console.log(response.body)
+    expect(response.statusCode).to.eql(400);
+    expect(response.body.name).to.eql(boardName);
   }
-  async create_label_on_board(label_name, label_color) {
+  async getBoard(statusCode) {
     const response = await spec()
-      .post(`${BASE_URL}/boards/${this.board.id}/labels`)
+      .get(`${BASE_URL}/boards/${this.createdBoard.id}`)
       .withQueryParams({
-        name: label_name,
-        color: label_color,
+        ...credentials,
+      });
+    expect(response.statusCode).to.eql(statusCode);
+  }
+  async createLabelOnBoard(labelName, labelColor) {
+    console.log(this.board.id);
+    const response = await spec()
+      .post(`${BASE_URL}/boards/${this.createdBoard.id}/labels`)
+      .withQueryParams({
+        name: labelName,
+        color: labelColor,
+        ...credentials,
+      });
+    this.createdLabel = response.body;
+    expect(response.statusCode).to.eql(200);
+    expect(response.body.name).to.eql(labelName);
+    expect(response.body.color).to.eql(labelColor);
+  }
+  async deleteBoard() {
+    console.log(this.createdBoard.id)
+    const response = await spec()
+      .delete(`${BASE_URL}/boards/${this.createdBoard.id}`)
+      .withQueryParams({
         ...credentials,
       });
     expect(response.statusCode).to.eql(200);
-    expect(response.body.name).to.eql(label_name);
-    expect(response.body.color).to.eql(label_color);
-    this.label = response.body;
   }
 }
 
