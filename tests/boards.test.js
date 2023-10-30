@@ -6,6 +6,10 @@ describe("APi tests with Trello boards", () => {
     await board.createNewBoard("New Board");
   });
 
+  it("Get a Board after creating", async () => {
+    await board.getBoard(board.createdBoard, 200);
+  });
+
   it("Create a Label on a Board", async () => {
     await board.createLabelOnBoard(board.createdBoard, "New Label", "green");
   });
