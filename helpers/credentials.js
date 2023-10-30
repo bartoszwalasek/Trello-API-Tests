@@ -5,7 +5,7 @@ export const credentials = {
   token: process.env.TOKEN,
 };
 
-export const board_member = {
+export const boardMember = {
   id: process.env.ID,
   fullName: "Bartosz Walasek",
   username: "bartoszwalasek3",
