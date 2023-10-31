@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha tests --reporter mochawesome",
-    "noReport": "mocha tests"
+    "noReport": "mocha tests",
+    "noReportCards": "mocha tests/cards.test.js",
+    "noReportBoards": "mocha tests/boards.test.js"
   },
   "repository": {
     "type": "git",

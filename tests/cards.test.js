@@ -16,6 +16,10 @@ describe("API tests with Trello cards", () => {
     await card.createNewCard(to_do_list, "New Card");
   });
 
+  it("Get a Card after creating", async () => {
+    await card.getCard(card.createdCard, 200);
+  });
+
   it("Delete a Board", async () => {
     await board.deleteBoard(board.createdBoard);
   });
