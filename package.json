@@ -4,8 +4,8 @@
   "description": "Repository to test Trello API",
   "main": "index.js",
   "scripts": {
-    "test": "mocha tests/boards.test.js --reporter mochawesome",
-    "noReport": "mocha tests/boards.test.js"
+    "test": "mocha tests --reporter mochawesome",
+    "noReport": "mocha tests"
   },
   "repository": {
     "type": "git",
