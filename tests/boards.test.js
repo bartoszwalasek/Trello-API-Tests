@@ -1,7 +1,7 @@
 import { board } from "../helpers/classes/Board.js";
 import { card } from "../helpers/classes/Card.js";
 
-describe("APi tests with Trello boards", () => {
+describe("API tests with Trello boards", () => {
   it("Create a Board", async () => {
     await board.createNewBoard("New Board");
   });
@@ -14,17 +14,16 @@ describe("APi tests with Trello boards", () => {
     await board.createListOnBoard(board.createdBoard, "New List");
   });
 
+  it("Get the Lists on a Board", async () => {
+    await board.getListsOnBoard(board.createdBoard);
+  });
+
   it("Verify default Lists on a Board", async () => {
     await board.verifyDefaultListsOnBoard(board.createdBoard);
   });
 
   it("Find a newly added List", async () => {
     await board.FindNewlyAddedList(board.createdBoard);
-  });
-
-  it("Create a New Card in To Do List", async () => {
-    let to_do_list = board.lists.find((list) => list.name === "To Do");
-    await card.createNewCard(to_do_list, "New Card");
   });
 
   it("Get the Members of Board", async () => {

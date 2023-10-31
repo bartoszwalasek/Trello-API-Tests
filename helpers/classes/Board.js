@@ -65,6 +65,18 @@ export class Board {
     expect(response.statusCode).to.eql(200);
     expect(response.body.name).to.eql(listName);
   }
+  async getListsOnBoard(board) {
+    const response = await spec()
+      .get(`${BASE_URL}/boards/${board.id}/lists`)
+      .withQueryParams({
+        ...credentials,
+      })
+      .withHeaders({
+        Accept: "application/json",
+      });
+    this.lists = response.body;
+    expect(response.statusCode).to.eql(200);
+  }
   async verifyDefaultListsOnBoard(board) {
     const response = await spec()
       .get(`${BASE_URL}/boards/${board.id}/lists`)
@@ -78,11 +90,11 @@ export class Board {
     expect(response.statusCode).to.eql(200);
 
     defaultLists.forEach((list) => {
-      let desired_list = response.body.find(
-        (received_list) => received_list.name === list.name
+      let desiredList = this.lists.find(
+        (receivedList) => receivedList.name === list.name
       );
       try {
-        expect(desired_list).to.include({ name: list.name });
+        expect(desiredList).to.include({ name: list.name });
       } catch {
         throw new Error(`list includes names ${JSON.stringify(defaultLists)}`);
       }
@@ -97,9 +109,11 @@ export class Board {
       .withHeaders({
         Accept: "application/json",
       });
-    const new_list = response.body.find((list) => list.name === listName);
+    this.lists = response.body;
     expect(response.statusCode).to.eql(200);
-    expect(new_list).to.include({ name: listName });
+
+    const newList = this.lists.find((list) => list.name === listName);
+    expect(newList).to.include({ name: listName });
   }
   async GetMembersOfBoard(board) {
     const response = await spec()
