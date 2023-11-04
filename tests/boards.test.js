@@ -1,5 +1,4 @@
 import { board } from "../helpers/classes/Board.js";
-import { card } from "../helpers/classes/Card.js";
 
 describe("API tests with Trello boards", () => {
   it("Create a Board", async () => {
