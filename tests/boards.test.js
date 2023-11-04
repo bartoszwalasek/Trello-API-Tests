@@ -21,12 +21,12 @@ describe("API tests with Trello boards", () => {
     await board.getListsOnBoard(board.createdBoard);
   });
 
-  it("Verify default Lists on a Board", async () => {
-    await board.verifyDefaultListsOnBoard(board.createdBoard);
+  it("Verify default Lists on a Board", () => {
+    board.verifyDefaultListsOnBoard(board.createdBoard);
   });
 
-  it("Find a newly added List", async () => {
-    await board.FindNewlyAddedList(board.createdBoard);
+  it("Find a newly added List", () => {
+    board.FindNewlyAddedList(board.createdBoard);
   });
 
   it("Get the Members of Board", async () => {

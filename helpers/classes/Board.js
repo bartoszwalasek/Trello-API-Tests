@@ -77,18 +77,7 @@ export class Board {
     this.lists = response.body;
     expect(response.statusCode).to.eql(200);
   }
-  async verifyDefaultListsOnBoard(board) {
-    const response = await spec()
-      .get(`${BASE_URL}/boards/${board.id}/lists`)
-      .withQueryParams({
-        ...credentials,
-      })
-      .withHeaders({
-        Accept: "application/json",
-      });
-    this.lists = response.body;
-    expect(response.statusCode).to.eql(200);
-
+  verifyDefaultListsOnBoard() {
     defaultLists.forEach((list) => {
       let desiredList = this.lists.find(
         (receivedList) => receivedList.name === list.name
@@ -100,18 +89,7 @@ export class Board {
       }
     });
   }
-  async FindNewlyAddedList(board) {
-    const response = await spec()
-      .get(`${BASE_URL}/boards/${board.id}/lists`)
-      .withQueryParams({
-        ...credentials,
-      })
-      .withHeaders({
-        Accept: "application/json",
-      });
-    this.lists = response.body;
-    expect(response.statusCode).to.eql(200);
-
+  FindNewlyAddedList() {
     const newList = this.lists.find((list) => list.name === listName);
     expect(newList).to.include({ name: listName });
   }
