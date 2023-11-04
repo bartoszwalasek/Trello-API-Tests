@@ -20,7 +20,8 @@ describe("API tests with Trello cards", () => {
     await card.getCard(card.createdCard, 200);
   });
 
-  it("Delete a Board", async () => {
-    await board.deleteBoard(board.createdBoard);
+  it("Add a new comment to the Card", async () => {
+    await card.AddNewCommentToCard(card.createdCard, "New comment");
   });
+
 });
