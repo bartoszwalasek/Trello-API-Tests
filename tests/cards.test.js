@@ -3,16 +3,15 @@ import { card } from "../helpers/classes/Card.js";
 import { defaultLists, dataToUpdateCard } from "../helpers/data.js";
 
 describe("API tests with Trello cards", () => {
-  it("Create a Board", async () => {
+  before("Create a New Board to conduct tests with Cards", async () => {
     await board.createNewBoard("New Board to Card test");
-  });
-
-  it("Get a Board after creating", async () => {
     await board.getBoard(board.createdBoard, 200);
+    await board.getListsOnBoard(board.createdBoard);
   });
 
-  it("Get Lists on a Board", async () => {
-    await board.getListsOnBoard(board.createdBoard);
+  after("Delete the New Board after tests with Cards", async () => {
+    await board.deleteBoard(board.createdBoard);
+    await board.getBoard(board.createdBoard, 404);
   });
 
   it("Create a New Card in To Do List", async () => {
@@ -36,9 +35,5 @@ describe("API tests with Trello cards", () => {
     );
     dataToUpdateCard.idList = doingList.id;
     await card.UpdateCard(card.createdCard, dataToUpdateCard);
-  });
-
-  it("Delete a Board", async () => {
-    await board.deleteBoard(board.createdBoard);
   });
 });
