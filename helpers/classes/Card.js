@@ -1,8 +1,8 @@
 import { expect } from "chai";
 import pkg from "pactum";
 const { spec } = pkg;
-import { credentials, boardMember } from "../credentials.js";
-import { BASE_URL } from "../data.js";
+import { credentials } from "../credentials.js";
+import { BASE_URL, dataToUpdateCard } from "../data.js";
 
 export class Card {
   constructor() {
@@ -10,11 +10,12 @@ export class Card {
     this.createdComment;
   }
 
-  async createNewCard(list, cardName) {
+  async createNewCard(list, cardName, cardDescription) {
     const response = await spec()
       .post(`${BASE_URL}/cards/`)
       .withQueryParams({
         name: cardName,
+        desc: cardDescription,
         idList: list.id,
         ...credentials,
       });
@@ -22,7 +23,7 @@ export class Card {
     expect(response.statusCode).to.eql(200);
     expect(response.body.idList).to.eql(list.id);
     expect(response.body.name).to.eql(cardName);
-    expect(response.body.idMembers).to.eql(boardMember.id);
+    expect(response.body.desc).to.eql(cardDescription);
   }
   async getCard(card, statusCode) {
     const response = await spec()
@@ -32,6 +33,18 @@ export class Card {
       });
     expect(response.statusCode).to.eql(statusCode);
     expect(response.body.id).to.eql(card.id);
+  }
+  async UpdateCard(card, dataToUpdateCard) {
+    const response = await spec()
+      .put(`${BASE_URL}/cards/${card.id}`)
+      .withQueryParams({
+        ...credentials,
+        ...dataToUpdateCard,
+      });
+    expect(response.statusCode).to.eql(200);
+    expect(response.body.name).to.eql(dataToUpdateCard.name);
+    expect(response.body.desc).to.eql(dataToUpdateCard.desc);
+    expect(response.body.idList).to.eql(dataToUpdateCard.idList);
   }
   async AddNewCommentToCard(card, comment) {
     const response = await spec()
