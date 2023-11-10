@@ -1,5 +1,6 @@
 import { board } from "../helpers/classes/Board.js";
 import { card } from "../helpers/classes/Card.js";
+import { list } from "../helpers/classes/List.js";
 import { defaultLists, dataToUpdateCard } from "../helpers/data.js";
 
 describe("API tests with Trello cards", () => {
@@ -15,9 +16,7 @@ describe("API tests with Trello cards", () => {
   });
 
   it("Create a New Card in To Do List", async () => {
-    let toDoList = board.lists.find(
-      (list) => list.name === defaultLists[0].name
-    );
+    let toDoList = list.findList(board.lists, defaultLists[0].name);
     await card.createNewCard(toDoList, "New Card", "Test Description");
   });
 
@@ -30,9 +29,7 @@ describe("API tests with Trello cards", () => {
   });
 
   it("Move a Card to Doing List", async () => {
-    let doingList = board.lists.find(
-      (list) => list.name === defaultLists[1].name
-    );
+    let doingList = list.findList(board.lists, defaultLists[1].name);
     dataToUpdateCard.idList = doingList.id;
     await card.UpdateCard(card.createdCard, dataToUpdateCard);
   });
