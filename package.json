@@ -4,10 +4,10 @@
   "description": "Repository to test Trello API",
   "main": "index.js",
   "scripts": {
-    "test": "mocha tests --reporter mochawesome",
-    "noReport": "mocha tests",
-    "noReportCards": "mocha tests/cards.test.js",
-    "noReportBoards": "mocha tests/boards.test.js"
+    "test": "mocha tests --reporter mochawesome --timeout 3000",
+    "noReport": "mocha tests --timeout 3000",
+    "noReportCards": "mocha tests/cards.test.js --timeout 3000",
+    "noReportBoards": "mocha tests/boards.test.js --timeout 3000"
   },
   "repository": {
     "type": "git",
