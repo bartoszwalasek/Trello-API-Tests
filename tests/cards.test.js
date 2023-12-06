@@ -25,12 +25,12 @@ describe("API tests with Trello cards", () => {
   });
 
   it("Add a new comment to a Card", async () => {
-    await card.AddNewCommentToCard(card.createdCard, "New comment");
+    await card.addNewCommentToCard(card.createdCard, "New comment");
   });
 
   it("Move a Card to Doing List", async () => {
     let doingList = list.findList(board.lists, defaultLists[1].name);
     dataToUpdateCard.idList = doingList.id;
-    await card.UpdateCard(card.createdCard, dataToUpdateCard);
+    await card.updateCard(card.createdCard, dataToUpdateCard);
   });
 });
