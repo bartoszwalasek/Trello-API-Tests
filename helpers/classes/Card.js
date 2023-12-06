@@ -22,7 +22,7 @@ export class Card {
         ...credentials,
       });
     this.createdCard = response.body;
-    const compareStatus = date.compareDates(
+    const compareDatesStatus = date.compareDates(
       response.body.dateLastActivity,
       time
     );
@@ -30,7 +30,7 @@ export class Card {
     expect(response.body.idList).to.eql(list.id);
     expect(response.body.name).to.eql(cardName);
     expect(response.body.desc).to.eql(cardDescription);
-    expect(compareStatus).to.be.true;
+    expect(compareDatesStatus).to.be.true;
   }
   async getCard(card, statusCode) {
     const response = await spec()
@@ -42,16 +42,22 @@ export class Card {
     expect(response.body.id).to.eql(card.id);
   }
   async updateCard(card, dataToUpdateCard) {
+    const time = date.getCurrentUTCTime();
     const response = await spec()
       .put(`${BASE_URL}/cards/${card.id}`)
       .withQueryParams({
         ...credentials,
         ...dataToUpdateCard,
       });
+    const compareDatesStatus = date.compareDates(
+      response.body.dateLastActivity,
+      time
+    );
     expect(response.statusCode).to.eql(200);
     expect(response.body.name).to.eql(dataToUpdateCard.name);
     expect(response.body.desc).to.eql(dataToUpdateCard.desc);
     expect(response.body.idList).to.eql(dataToUpdateCard.idList);
+    expect(compareDatesStatus).to.be.true;
   }
   async addNewCommentToCard(card, comment) {
     const time = date.getCurrentUTCTime();
@@ -62,12 +68,12 @@ export class Card {
         ...credentials,
       });
     this.createdComment = response.body;
-    const compareStatus = date.compareDates(response.body.date, time);
+    const compareDatesStatus = date.compareDates(response.body.date, time);
     expect(response.statusCode).to.eql(200);
     expect(response.body.data.text).to.eql(comment);
     expect(response.body.data.card.id).to.eql(card.id);
     expect(response.body.idMemberCreator).to.eql(boardMember.id);
-    expect(compareStatus).to.be.true;
+    expect(compareDatesStatus).to.be.true;
   }
 }
 
