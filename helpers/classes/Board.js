@@ -85,15 +85,15 @@ export class Board {
       try {
         expect(desiredList).to.include({ name: list.name });
       } catch {
-        throw new Error(`list includes names ${JSON.stringify(defaultLists)}`);
+        throw new Error(`Wrong default lists' names. Names should be - ${JSON.stringify(defaultLists)}`);
       }
     });
   }
-  FindNewlyAddedList() {
+  findNewlyAddedList() {
     const newList = this.lists.find((list) => list.name === listName);
     expect(newList).to.include({ name: listName });
   }
-  async GetMembersOfBoard(board) {
+  async getMembersOfBoard(board) {
     const response = await spec()
       .get(`${BASE_URL}/boards/${board.id}/members`)
       .withQueryParams({

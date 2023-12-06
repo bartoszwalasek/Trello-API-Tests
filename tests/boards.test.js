@@ -26,11 +26,11 @@ describe("API tests with Trello boards", () => {
   });
 
   it("Find a newly added List", () => {
-    board.FindNewlyAddedList(board.createdBoard);
+    board.findNewlyAddedList(board.createdBoard);
   });
 
   it("Get the Members of Board", async () => {
-    await board.GetMembersOfBoard(board.createdBoard);
+    await board.getMembersOfBoard(board.createdBoard);
   });
 
   it("Delete a Board", async () => {

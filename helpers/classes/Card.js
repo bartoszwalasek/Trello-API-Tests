@@ -34,7 +34,7 @@ export class Card {
     expect(response.statusCode).to.eql(statusCode);
     expect(response.body.id).to.eql(card.id);
   }
-  async UpdateCard(card, dataToUpdateCard) {
+  async updateCard(card, dataToUpdateCard) {
     const response = await spec()
       .put(`${BASE_URL}/cards/${card.id}`)
       .withQueryParams({
@@ -46,7 +46,7 @@ export class Card {
     expect(response.body.desc).to.eql(dataToUpdateCard.desc);
     expect(response.body.idList).to.eql(dataToUpdateCard.idList);
   }
-  async AddNewCommentToCard(card, comment) {
+  async addNewCommentToCard(card, comment) {
     const response = await spec()
       .post(`${BASE_URL}/cards/${card.id}/actions/comments`)
       .withQueryParams({
