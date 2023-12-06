@@ -1,14 +1,16 @@
 import { expect } from "chai";
 import pkg from "pactum";
 const { spec } = pkg;
+import fs from "fs";
 import { credentials, boardMember } from "../credentials.js";
-import { BASE_URL } from "../data.js";
+import { BASE_URL, fileName } from "../data.js";
 import { date } from "./Date.js";
 
 export class Card {
   constructor() {
     this.createdCard;
     this.createdComment;
+    this.createdAttachment;
   }
 
   async createNewCard(list, cardName, cardDescription) {
@@ -74,13 +76,36 @@ export class Card {
     expect(response.body.idMemberCreator).to.eql(boardMember.id);
     expect(compareDatesStatus).to.be.true;
   }
-  async deleteCard(board) {
+  async deleteCard(card) {
     const response = await spec()
-      .delete(`${BASE_URL}/cards/${board.id}`)
+      .delete(`${BASE_URL}/cards/${card.id}`)
       .withQueryParams({
         ...credentials,
       });
     expect(response.statusCode).to.eql(200);
+  }
+  async createAttachmentOnCard(card, attachmentName) {
+    const time = date.getCurrentUTCTime();
+    const response = await spec()
+      .post(`${BASE_URL}/cards/${card.id}/attachments`)
+      .withQueryParams({
+        name: attachmentName,
+        ...credentials,
+      })
+      .withMultiPartFormData("file", fs.readFileSync("helpers/test.txt"), {
+        filename: fileName,
+      });
+    this.createdAttachment = response.body;
+    const compareDatesStatus = date.compareDates(response.body.date, time);
+    expect(response.statusCode).to.eql(200);
+    expect(response.body.name).to.eql(attachmentName);
+    expect(response.body.fileName).to.eql(fileName);
+    expect(response.body.url).to.eql(
+      `https://trello.com/1/cards/${card.id}/attachments/${this.createdAttachment.id}/download/${fileName}`
+    );
+    expect(response.body.idMember).to.eql(boardMember.id);
+    expect(response.body.bytes).to.not.eql(0);
+    expect(compareDatesStatus).to.be.true;
   }
 }
 
