@@ -33,4 +33,16 @@ describe("API tests with Trello cards", () => {
     dataToUpdateCard.idList = doingList.id;
     await card.updateCard(card.createdCard, dataToUpdateCard);
   });
+
+  it("Create an Attachment on Card", async () => {
+    await card.createAttachmentOnCard(card.createdCard, "New attachment");
+  });
+
+  it("Delete a Card", async () => {
+    await card.deleteCard(card.createdCard);
+  });
+
+  it("Get a Card after deleting", async () => {
+    await card.getCard(card.createdCard, 404);
+  });
 });
