@@ -39,7 +39,6 @@ export class Card {
         ...credentials,
       });
     expect(response.statusCode).to.eql(statusCode);
-    expect(response.body.id).to.eql(card.id);
   }
   async updateCard(card, dataToUpdateCard) {
     const time = date.getCurrentUTCTime();
@@ -74,6 +73,14 @@ export class Card {
     expect(response.body.data.card.id).to.eql(card.id);
     expect(response.body.idMemberCreator).to.eql(boardMember.id);
     expect(compareDatesStatus).to.be.true;
+  }
+  async deleteCard(board) {
+    const response = await spec()
+      .delete(`${BASE_URL}/cards/${board.id}`)
+      .withQueryParams({
+        ...credentials,
+      });
+    expect(response.statusCode).to.eql(200);
   }
 }
 
