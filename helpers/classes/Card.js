@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import pkg from "pactum";
 const { spec } = pkg;
-import { credentials } from "../credentials.js";
+import { credentials, boardMember } from "../credentials.js";
 import { BASE_URL } from "../data.js";
 import { date } from "./Date.js";
 
@@ -12,6 +12,7 @@ export class Card {
   }
 
   async createNewCard(list, cardName, cardDescription) {
+    const time = date.getCurrentUTCTime();
     const response = await spec()
       .post(`${BASE_URL}/cards/`)
       .withQueryParams({
@@ -21,7 +22,6 @@ export class Card {
         ...credentials,
       });
     this.createdCard = response.body;
-    const time = date.getCurrentUTCTime();
     const compareStatus = date.compareDates(
       response.body.dateLastActivity,
       time
@@ -54,6 +54,7 @@ export class Card {
     expect(response.body.idList).to.eql(dataToUpdateCard.idList);
   }
   async addNewCommentToCard(card, comment) {
+    const time = date.getCurrentUTCTime();
     const response = await spec()
       .post(`${BASE_URL}/cards/${card.id}/actions/comments`)
       .withQueryParams({
@@ -61,9 +62,12 @@ export class Card {
         ...credentials,
       });
     this.createdComment = response.body;
+    const compareStatus = date.compareDates(response.body.date, time);
     expect(response.statusCode).to.eql(200);
     expect(response.body.data.text).to.eql(comment);
     expect(response.body.data.card.id).to.eql(card.id);
+    expect(response.body.idMemberCreator).to.eql(boardMember.id);
+    expect(compareStatus).to.be.true;
   }
 }
 
