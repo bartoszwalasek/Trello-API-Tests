@@ -3,6 +3,7 @@ import pkg from "pactum";
 const { spec } = pkg;
 import { credentials } from "../credentials.js";
 import { BASE_URL } from "../data.js";
+import { date } from "./Date.js";
 
 export class Card {
   constructor() {
@@ -20,10 +21,16 @@ export class Card {
         ...credentials,
       });
     this.createdCard = response.body;
+    const time = date.getCurrentUTCTime();
+    const compareStatus = date.compareDates(
+      response.body.dateLastActivity,
+      time
+    );
     expect(response.statusCode).to.eql(200);
     expect(response.body.idList).to.eql(list.id);
     expect(response.body.name).to.eql(cardName);
     expect(response.body.desc).to.eql(cardDescription);
+    expect(compareStatus).to.be.true;
   }
   async getCard(card, statusCode) {
     const response = await spec()
