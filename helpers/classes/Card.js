@@ -7,11 +7,11 @@ import { BASE_URL, fileName } from "../data.js";
 import { date } from "./Date.js";
 
 export class Card {
-  constructor() {
-    this.createdCard;
-    this.createdComment;
-    this.createdAttachment;
-  }
+  createdCard;
+  createdComment;
+  createdAttachment;
+
+  constructor() {}
 
   async createNewCard(list, cardName, cardDescription) {
     const time = date.getCurrentUTCTime();

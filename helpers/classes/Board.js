@@ -6,11 +6,11 @@ import { BASE_URL, listName } from "../data.js";
 import { defaultLists } from "../data.js";
 
 export class Board {
-  constructor() {
-    this.createdBoard;
-    this.createdLabel;
-    this.lists;
-  }
+  createdBoard;
+  createdLabel;
+  lists;
+
+  constructor() {}
 
   async createNewBoard(boardName) {
     const response = await spec()
@@ -85,7 +85,11 @@ export class Board {
       try {
         expect(desiredList).to.include({ name: list.name });
       } catch {
-        throw new Error(`Wrong default lists' names. Names should be - ${JSON.stringify(defaultLists)}`);
+        throw new Error(
+          `Wrong default lists' names. Names should be - ${JSON.stringify(
+            defaultLists
+          )}`
+        );
       }
     });
   }
