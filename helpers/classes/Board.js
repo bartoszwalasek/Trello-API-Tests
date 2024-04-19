@@ -1,14 +1,13 @@
-import { expect } from "chai";
 import pkg from "pactum";
 const { spec } = pkg;
 import { credentials, boardMember } from "../credentials.js";
-import { BASE_URL, listName } from "../data.js";
-import { defaultLists } from "../data.js";
+import { BASE_URL } from "../data.js";
 
 export class Board {
   createdBoard;
   createdLabel;
   lists;
+  boardMember;
 
   constructor() {}
 
@@ -20,16 +19,15 @@ export class Board {
         ...credentials,
       });
     this.createdBoard = response.body;
-    expect(response.statusCode).to.eql(200);
-    expect(response.body.name).to.eql(boardName);
+    return response;
   }
-  async getBoard(board, statusCode) {
+  async getBoard(board) {
     const response = await spec()
       .get(`${BASE_URL}/boards/${board.id}`)
       .withQueryParams({
         ...credentials,
       });
-    expect(response.statusCode).to.eql(statusCode);
+    return response;
   }
   async createLabelOnBoard(board, labelName, labelColor) {
     const response = await spec()
@@ -40,9 +38,7 @@ export class Board {
         ...credentials,
       });
     this.createdLabel = response.body;
-    expect(response.statusCode).to.eql(200);
-    expect(response.body.name).to.eql(labelName);
-    expect(response.body.color).to.eql(labelColor);
+    return response;
   }
   async deleteBoard(board) {
     const response = await spec()
@@ -50,9 +46,9 @@ export class Board {
       .withQueryParams({
         ...credentials,
       });
-    expect(response.statusCode).to.eql(200);
+    return response;
   }
-  async createListOnBoard(board) {
+  async createListOnBoard(board, listName) {
     const response = await spec()
       .post(`${BASE_URL}/boards/${board.id}/lists`)
       .withQueryParams({
@@ -62,8 +58,7 @@ export class Board {
       .withHeaders({
         Accept: "application/json",
       });
-    expect(response.statusCode).to.eql(200);
-    expect(response.body.name).to.eql(listName);
+    return response;
   }
   async getListsOnBoard(board) {
     const response = await spec()
@@ -75,27 +70,7 @@ export class Board {
         Accept: "application/json",
       });
     this.lists = response.body;
-    expect(response.statusCode).to.eql(200);
-  }
-  verifyDefaultListsOnBoard() {
-    defaultLists.forEach((list) => {
-      let desiredList = this.lists.find(
-        (receivedList) => receivedList.name === list.name
-      );
-      try {
-        expect(desiredList).to.include({ name: list.name });
-      } catch {
-        throw new Error(
-          `Wrong default lists' names. Names should be - ${JSON.stringify(
-            defaultLists
-          )}`
-        );
-      }
-    });
-  }
-  findNewlyAddedList() {
-    const newList = this.lists.find((list) => list.name === listName);
-    expect(newList).to.include({ name: listName });
+    return response;
   }
   async getMembersOfBoard(board) {
     const response = await spec()
@@ -103,14 +78,9 @@ export class Board {
       .withQueryParams({
         ...credentials,
       });
-    const member = response.body.find((member) => member.id === boardMember.id);
-    expect(response.statusCode).to.eql(200);
-    expect(member).to.eql({
-      id: boardMember.id,
-      fullName: boardMember.fullName,
-      username: boardMember.username,
-    });
+    this.boardMember = response.body.find(
+      (member) => member.id === boardMember.id
+    );
+    return response;
   }
 }
-
-export const board = new Board();
