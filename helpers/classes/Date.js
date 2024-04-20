@@ -14,5 +14,3 @@ export class Date {
     return dayjs(realTime).isSame(dayjs(trimmedTrelloTime));
   }
 }
-
-export const date = new Date();

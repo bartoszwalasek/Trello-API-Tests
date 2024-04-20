@@ -1,116 +1,114 @@
-import { expect } from "chai";
 import pkg from "pactum";
 const { spec } = pkg;
 import { credentials, boardMember } from "../credentials.js";
-import { BASE_URL, listName } from "../data.js";
-import { defaultLists } from "../data.js";
+import { BASE_URL } from "../data.js";
 
 export class Board {
   createdBoard;
-  createdLabel;
   lists;
 
   constructor() {}
 
   async createNewBoard(boardName) {
-    const response = await spec()
-      .post(`${BASE_URL}/boards/`)
-      .withQueryParams({
-        name: boardName,
-        ...credentials,
-      });
-    this.createdBoard = response.body;
-    expect(response.statusCode).to.eql(200);
-    expect(response.body.name).to.eql(boardName);
+    try {
+      const response = await spec()
+        .post(`${BASE_URL}/boards/`)
+        .withQueryParams({
+          name: boardName,
+          ...credentials,
+        });
+      this.createdBoard = response.body;
+      return response;
+    } catch {
+      throw new Error("Failed to create a new board.");
+    }
   }
-  async getBoard(board, statusCode) {
-    const response = await spec()
-      .get(`${BASE_URL}/boards/${board.id}`)
-      .withQueryParams({
-        ...credentials,
-      });
-    expect(response.statusCode).to.eql(statusCode);
+
+  async getBoard(board) {
+    try {
+      const response = await spec()
+        .get(`${BASE_URL}/boards/${board.id}`)
+        .withQueryParams({
+          ...credentials,
+        });
+      return response;
+    } catch {
+      throw new Error("Failed to get a board information.");
+    }
   }
+
   async createLabelOnBoard(board, labelName, labelColor) {
-    const response = await spec()
-      .post(`${BASE_URL}/boards/${board.id}/labels`)
-      .withQueryParams({
-        name: labelName,
-        color: labelColor,
-        ...credentials,
-      });
-    this.createdLabel = response.body;
-    expect(response.statusCode).to.eql(200);
-    expect(response.body.name).to.eql(labelName);
-    expect(response.body.color).to.eql(labelColor);
+    try {
+      const response = await spec()
+        .post(`${BASE_URL}/boards/${board.id}/labels`)
+        .withQueryParams({
+          name: labelName,
+          color: labelColor,
+          ...credentials,
+        });
+      return response;
+    } catch {
+      throw new Error("Failed to create a label.");
+    }
   }
+
   async deleteBoard(board) {
-    const response = await spec()
-      .delete(`${BASE_URL}/boards/${board.id}`)
-      .withQueryParams({
-        ...credentials,
-      });
-    expect(response.statusCode).to.eql(200);
+    try {
+      const response = await spec()
+        .delete(`${BASE_URL}/boards/${board.id}`)
+        .withQueryParams({
+          ...credentials,
+        });
+      return response;
+    } catch {
+      throw new Error("Failed to delete a board.");
+    }
   }
-  async createListOnBoard(board) {
-    const response = await spec()
-      .post(`${BASE_URL}/boards/${board.id}/lists`)
-      .withQueryParams({
-        name: listName,
-        ...credentials,
-      })
-      .withHeaders({
-        Accept: "application/json",
-      });
-    expect(response.statusCode).to.eql(200);
-    expect(response.body.name).to.eql(listName);
+
+  async createListOnBoard(board, listName) {
+    try {
+      const response = await spec()
+        .post(`${BASE_URL}/boards/${board.id}/lists`)
+        .withQueryParams({
+          name: listName,
+          ...credentials,
+        })
+        .withHeaders({
+          Accept: "application/json",
+        });
+      return response;
+    } catch {
+      throw new Error("Failed to create a list.");
+    }
   }
+
   async getListsOnBoard(board) {
-    const response = await spec()
-      .get(`${BASE_URL}/boards/${board.id}/lists`)
-      .withQueryParams({
-        ...credentials,
-      })
-      .withHeaders({
-        Accept: "application/json",
-      });
-    this.lists = response.body;
-    expect(response.statusCode).to.eql(200);
+    try {
+      const response = await spec()
+        .get(`${BASE_URL}/boards/${board.id}/lists`)
+        .withQueryParams({
+          ...credentials,
+        })
+        .withHeaders({
+          Accept: "application/json",
+        });
+      this.lists = response.body;
+      return response;
+    } catch {
+      throw new Error("Failed to get a list information.");
+    }
   }
-  verifyDefaultListsOnBoard() {
-    defaultLists.forEach((list) => {
-      let desiredList = this.lists.find(
-        (receivedList) => receivedList.name === list.name
-      );
-      try {
-        expect(desiredList).to.include({ name: list.name });
-      } catch {
-        throw new Error(
-          `Wrong default lists' names. Names should be - ${JSON.stringify(
-            defaultLists
-          )}`
-        );
-      }
-    });
-  }
-  findNewlyAddedList() {
-    const newList = this.lists.find((list) => list.name === listName);
-    expect(newList).to.include({ name: listName });
-  }
+
   async getMembersOfBoard(board) {
-    const response = await spec()
-      .get(`${BASE_URL}/boards/${board.id}/members`)
-      .withQueryParams({
-        ...credentials,
-      });
-    const member = response.body.find((member) => member.id === boardMember.id);
-    expect(response.statusCode).to.eql(200);
-    expect(member).to.eql({
-      id: boardMember.id,
-      fullName: boardMember.fullName,
-      username: boardMember.username,
-    });
+    try {
+      const response = await spec()
+        .get(`${BASE_URL}/boards/${board.id}/members`)
+        .withQueryParams({
+          ...credentials,
+        });
+      return response;
+    } catch {
+      throw new Error("Failed to get a members information.");
+    }
   }
 }
-
-export const board = new Board();
