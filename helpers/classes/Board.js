@@ -5,9 +5,7 @@ import { BASE_URL } from "../data.js";
 
 export class Board {
   createdBoard;
-  createdLabel;
   lists;
-  boardMember;
 
   constructor() {}
 
@@ -48,7 +46,6 @@ export class Board {
           color: labelColor,
           ...credentials,
         });
-      this.createdLabel = response.body;
       return response;
     } catch {
       throw new Error("Failed to create a label.");
@@ -109,9 +106,6 @@ export class Board {
         .withQueryParams({
           ...credentials,
         });
-      this.boardMember = response.body.find(
-        (member) => member.id === boardMember.id
-      );
       return response;
     } catch {
       throw new Error("Failed to get a members information.");
