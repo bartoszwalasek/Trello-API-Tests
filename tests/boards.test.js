@@ -54,28 +54,17 @@ describe("API tests with Trello boards", () => {
   });
 
   it("Get the Lists on a Board", async () => {
+    const list = new List();
+    const expectedLists = ["To Do", "Doing", "Done", "New List"];
     const expectedStatusCode = 200;
 
     const response = await board.getListsOnBoard(board.createdBoard);
 
     expect(response.statusCode).to.eql(expectedStatusCode);
-  });
-
-  it("Verify default Lists on a Board", () => {
-    const list = new List();
-    const defaultLists = [{ name: "To Do" }, { name: "Doing" }, { name: "Done" }];
-
-    defaultLists.forEach((defaultList) => {
-      let desiredList = list.findList(board.lists, defaultList.name);
-      try {
-        expect(desiredList).to.include({ name: defaultList.name });
-      } catch {
-        throw new Error(
-          `Wrong default lists' names. Names should be - ${JSON.stringify(
-            defaultLists
-          )}`
-        );
-      }
+    expect(response.body.length).to.eql(expectedLists.length);
+    expectedLists.forEach((expectedListName) => {
+      const foundList = list.findList(response.body, expectedListName);
+      expect(foundList).to.exist;
     });
   });
 
